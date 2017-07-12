@@ -28,6 +28,7 @@ import android.os.Parcel;
 import com.hortonworks.hdf.android.sitetosite.client.SiteToSiteClientConfig;
 import com.hortonworks.hdf.android.sitetosite.client.SiteToSiteRemoteCluster;
 import com.hortonworks.hdf.android.sitetosite.client.peer.PeerStatus;
+import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDBConstants.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,69 +41,17 @@ import java.util.concurrent.TimeUnit;
  * Easily save and load state useful for site-to-site communication
  */
 public class SiteToSiteDB {
-    public static final String ID_COLUMN = "ID";
-    public static final String CONTENT_COLUMN = "CONTENT";
-    public static final String CREATED_COLUMN = "CREATED";
-    public static final String EXPIRATION_MILLIS_COLUMN = "EXPIRATION_MILLIS";
-
-    public static final String PEER_STATUSES_TABLE_NAME = "APACHE_NIFI_SITE_TO_SITE_PEER_STATUSES";
-    public static final String PEER_STATUS_URLS_COLUMN = "URLS";
-    public static final String PEER_STATUS_PROXY_HOST_COLUMN = "PROXY_HOST";
-    public static final String PEER_STATUS_PROXY_PORT_COLUMN = "PROXY_PORT";
-    public static final String PEER_STATUS_WHERE_CLAUSE = PEER_STATUS_URLS_COLUMN + " = ? AND " + PEER_STATUS_PROXY_HOST_COLUMN + " = ? AND " + PEER_STATUS_PROXY_PORT_COLUMN + " = ?";
-
-    public static final String DATA_PACKET_QUEUE_TABLE_NAME = "APACHE_NIFI_SITE_TO_SITE_QUEUE";
-    public static final String DATA_PACKET_QEUE_PRIORITY_COLUMN = "PRIORITY";
-    public static final String DATA_PACKET_QUEUE_ATTRIBUTES_COLUMN = "ATTRIBUTES";
-    public static final String DATA_PACKET_QUEUE_TRANSACTION_COLUMN = "TRANSACTION_ID";
-
-    public static final String DATA_PACKET_QUEUE_TRANSACTIONS_TABLE_NAME = "APACHE_NIFI_SITE_TO_SITE_QUEUE_TRANSACTIONS";
-
-    public static final int VERSION = 1;
+    private static final int VERSION = 1;
 
     private static SQLiteOpenHelper sqLiteOpenHelper;
 
-    private final Context context;
+    //private final Context context;
 
     public SiteToSiteDB(Context context) {
-        this.context = context;
+        //this.context = context;
         synchronized (SiteToSiteDB.class) {
             if (sqLiteOpenHelper == null) {
-                sqLiteOpenHelper = new SQLiteOpenHelper(context, SiteToSiteDB.class.getSimpleName() + ".db", null, VERSION) {
-                    @Override
-                    public void onCreate(SQLiteDatabase db) {
-                        db.execSQL("CREATE TABLE " + PEER_STATUSES_TABLE_NAME + " (" +
-                                PEER_STATUS_URLS_COLUMN + " TEXT, " +
-                                PEER_STATUS_PROXY_HOST_COLUMN + " TEXT, " +
-                                PEER_STATUS_PROXY_PORT_COLUMN + " INTEGER, " +
-                                CONTENT_COLUMN + " BLOB, " +
-                                EXPIRATION_MILLIS_COLUMN + " INTEGER, " +
-                                "PRIMARY KEY(" + PEER_STATUS_URLS_COLUMN + ", " + PEER_STATUS_PROXY_HOST_COLUMN + ", " + PEER_STATUS_PROXY_PORT_COLUMN + "))");
-                        db.execSQL("CREATE INDEX " + PEER_STATUSES_TABLE_NAME + "_" + EXPIRATION_MILLIS_COLUMN + "_index ON " + PEER_STATUSES_TABLE_NAME + "(" + EXPIRATION_MILLIS_COLUMN + ")");
-
-                        db.execSQL("CREATE TABLE " + DATA_PACKET_QUEUE_TABLE_NAME + "(" +
-                                ID_COLUMN + " INTEGER PRIMARY KEY, " +
-                                CREATED_COLUMN + " INTEGER, " +
-                                DATA_PACKET_QEUE_PRIORITY_COLUMN + " INTEGER, " +
-                                DATA_PACKET_QUEUE_ATTRIBUTES_COLUMN + " BLOB, " +
-                                CONTENT_COLUMN + " BLOB, " +
-                                DATA_PACKET_QUEUE_TRANSACTION_COLUMN + " INTEGER, " +
-                                EXPIRATION_MILLIS_COLUMN + " INTEGER)");
-                        db.execSQL("CREATE INDEX " + DATA_PACKET_QUEUE_TABLE_NAME + "_" + DATA_PACKET_QUEUE_TRANSACTION_COLUMN + "_index ON " + DATA_PACKET_QUEUE_TABLE_NAME + "(" + DATA_PACKET_QUEUE_TRANSACTION_COLUMN + ")");
-                        db.execSQL("CREATE INDEX " + DATA_PACKET_QUEUE_TABLE_NAME + "_" + EXPIRATION_MILLIS_COLUMN + "_index ON " + DATA_PACKET_QUEUE_TABLE_NAME + "(" + EXPIRATION_MILLIS_COLUMN + ")");
-                        db.execSQL("CREATE INDEX " + DATA_PACKET_QUEUE_TABLE_NAME + "_sort_index ON " + DATA_PACKET_QUEUE_TABLE_NAME + "(" + DATA_PACKET_QEUE_PRIORITY_COLUMN + ", " + CREATED_COLUMN + ", " + ID_COLUMN + ")");
-
-                        db.execSQL("CREATE TABLE " + DATA_PACKET_QUEUE_TRANSACTIONS_TABLE_NAME + "(" +
-                                DATA_PACKET_QUEUE_TRANSACTION_COLUMN + " INTEGER PRIMARY KEY, " +
-                                EXPIRATION_MILLIS_COLUMN + " INTEGER)");
-                        db.execSQL("CREATE INDEX " + DATA_PACKET_QUEUE_TRANSACTIONS_TABLE_NAME + "_" + EXPIRATION_MILLIS_COLUMN + "_index ON " + DATA_PACKET_QUEUE_TRANSACTIONS_TABLE_NAME + "(" + EXPIRATION_MILLIS_COLUMN + ")");
-                    }
-
-                    @Override
-                    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-                    }
-                };
+                sqLiteOpenHelper = new SiteToSiteSQLiteOpenHelper(context, SiteToSiteDB.class.getSimpleName() + ".db", null, VERSION);
             }
         }
     }

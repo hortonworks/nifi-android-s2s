@@ -47,19 +47,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.CONTENT_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.CREATED_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QEUE_PRIORITY_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_ATTRIBUTES_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_TABLE_NAME;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_TRANSACTIONS_TABLE_NAME;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_TRANSACTION_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.EXPIRATION_MILLIS_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.ID_COLUMN;
+import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDBConstants.*;
 
 public class SQLiteDataPacketQueue extends AbstractQueuedSiteToSiteClient {
-    public static final String CANONICAL_NAME = SQLiteDataPacketQueue.class.getCanonicalName();
-    public static final String AGE_OFF_ROW_COUNT_QUERY = new StringBuilder("DELETE FROM ").append(DATA_PACKET_QUEUE_TABLE_NAME)
+    private static final String CANONICAL_NAME = SQLiteDataPacketQueue.class.getCanonicalName();
+    private static final String AGE_OFF_ROW_COUNT_QUERY = new StringBuilder("DELETE FROM ").append(DATA_PACKET_QUEUE_TABLE_NAME)
             .append(" WHERE ").append(ID_COLUMN)
             .append(" IN (SELECT ").append(ID_COLUMN)
             .append(" FROM ").append(DATA_PACKET_QUEUE_TABLE_NAME)

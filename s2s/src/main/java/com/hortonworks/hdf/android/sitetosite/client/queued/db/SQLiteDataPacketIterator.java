@@ -36,15 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.CONTENT_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.CREATED_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QEUE_PRIORITY_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_ATTRIBUTES_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_TABLE_NAME;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_TRANSACTIONS_TABLE_NAME;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.DATA_PACKET_QUEUE_TRANSACTION_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.EXPIRATION_MILLIS_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.ID_COLUMN;
+import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDBConstants.*;
 
 public class SQLiteDataPacketIterator {
     public static final String CANONICAL_NAME = SQLiteDataPacketIterator.class.getCanonicalName();

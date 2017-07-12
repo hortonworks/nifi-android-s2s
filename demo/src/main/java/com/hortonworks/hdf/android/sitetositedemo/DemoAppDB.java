@@ -35,9 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.CONTENT_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.CREATED_COLUMN;
-import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDB.ID_COLUMN;
+import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDBConstants.*;
 
 public class DemoAppDB {
     public static final String TRANSACTION_LOG_ENTRY_SAVED = DemoAppDB.class.getCanonicalName() + ".save(transactionLogEntry)";
