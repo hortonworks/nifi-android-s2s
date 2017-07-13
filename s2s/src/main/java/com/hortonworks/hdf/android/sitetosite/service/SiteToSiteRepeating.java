@@ -63,7 +63,7 @@ public class SiteToSiteRepeating extends WakefulBroadcastReceiver {
         final Intent packetIntent;
         if (intentType == IntentType.SEND) {
             final ParcelableTransactionResultCallback transactionResultCallback = (ParcelableTransactionResultCallback) callback;
-            packetIntent = SiteToSiteService.getIntent(context, intentType, dataPackets, siteToSiteClientConfig, new TransactionResultCallback() {
+            packetIntent = SiteToSiteService.getSendIntent(context, dataPackets, siteToSiteClientConfig, new TransactionResultCallback() {
                 @Override
                 public Handler getHandler() {
                     return null;
@@ -102,26 +102,59 @@ public class SiteToSiteRepeating extends WakefulBroadcastReceiver {
     }
 
     /**
-     * Creates a pending intent suitable for use with AlarmManager to schedule repeating site-to-site operations
+     * Creates a pending intent suitable for use with AlarmManager to schedule repeating site-to-site send packet operations
      *
-     * @param context the context
-     * @param dataCollector a data collector
-     * @param siteToSiteClientConfig the site to site config
-     * @param parcelableTransactionResultCallback a callback to be invoked whenever a transaction completes
+     * @param context The current application environment @{@link Context} from which this service is being called.
+     * @param dataCollector A DataCollector capable of providing data packets to use for the send intent when invoked
+     * @param siteToSiteClientConfig The configuration for the SiteToSiteClient.
+     * @param parcelableTransactionResultCallback A callback to be invoked whenever a transaction completes
      * @return a repeatable intent with enough metadata to save and reload it if desired
+     *
+     * @see SiteToSiteService#sendDataPackets(Context, Iterable, SiteToSiteClientConfig, TransactionResultCallback)
      */
     public static SiteToSiteRepeatableIntent createSendPendingIntent(Context context, DataCollector dataCollector, SiteToSiteClientConfig siteToSiteClientConfig, ParcelableTransactionResultCallback parcelableTransactionResultCallback) {
         return createPendingIntent(context, IntentType.SEND, dataCollector, siteToSiteClientConfig, parcelableTransactionResultCallback);
     }
 
+    /**
+     * Creates a pending intent suitable for use with AlarmManager to schedule repeating site-to-site enqueue packet operations
+     *
+     * @param context The current application environment @{@link Context} from which this service is being called.
+     * @param dataCollector A DataCollector capable of providing data packets to use for the enqueue intent when invoked
+     * @param queuedSiteToSiteClientConfig The configuration for the SiteToSiteClient and the DataPacket Queue.
+     * @param parcelableQueuedOperationResultCallback A callback to be invoked whenever a enqueue operation completes
+     * @return a repeatable intent with enough metadata to save and reload it if desired
+     *
+     * @see SiteToSiteService#enqueueDataPackets(Context, Iterable, QueuedSiteToSiteClientConfig, QueuedOperationResultCallback)
+     */
     public static SiteToSiteRepeatableIntent createEnqueuePendingIntent(Context context, DataCollector dataCollector, QueuedSiteToSiteClientConfig queuedSiteToSiteClientConfig, ParcelableQueuedOperationResultCallback parcelableQueuedOperationResultCallback) {
         return createPendingIntent(context, IntentType.ENQUEUE, dataCollector, queuedSiteToSiteClientConfig, parcelableQueuedOperationResultCallback);
     }
 
+    /**
+     * Creates a pending intent suitable for use with AlarmManager to schedule repeating site-to-site process queued packet operations
+     *
+     * @param context The current application environment @{@link Context} from which this service is being called.
+     * @param queuedSiteToSiteClientConfig The configuration for the SiteToSiteClient and the DataPacket Queue.
+     * @param parcelableQueuedOperationResultCallback A callback to be invoked whenever a process operation completes
+     * @return a repeatable intent with enough metadata to save and reload it if desired
+     *
+     * @see SiteToSiteService#processQueuedPackets(Context, QueuedSiteToSiteClientConfig, QueuedOperationResultCallback)
+     */
     public static SiteToSiteRepeatableIntent createProcessQueuePendingIntent(Context context, QueuedSiteToSiteClientConfig queuedSiteToSiteClientConfig, ParcelableQueuedOperationResultCallback parcelableQueuedOperationResultCallback) {
         return createPendingIntent(context, IntentType.PROCESS, null, queuedSiteToSiteClientConfig, parcelableQueuedOperationResultCallback);
     }
 
+    /**
+     * Creates a pending intent suitable for use with AlarmManager to schedule repeating site-to-site cleanup queued packet operations
+     *
+     * @param context The current application environment @{@link Context} from which this service is being called.
+     * @param queuedSiteToSiteClientConfig The configuration for the SiteToSiteClient and the DataPacket Queue.
+     * @param parcelableQueuedOperationResultCallback A callback to be invoked whenever a cleanup operation completes
+     * @return a repeatable intent with enough metadata to save and reload it if desired
+     *
+     * @see SiteToSiteService#cleanupQueuedPackets(Context, QueuedSiteToSiteClientConfig, QueuedOperationResultCallback)
+     */
     public static SiteToSiteRepeatableIntent createCleanupQueuePendingIntent(Context context, QueuedSiteToSiteClientConfig queuedSiteToSiteClientConfig, ParcelableQueuedOperationResultCallback parcelableQueuedOperationResultCallback) {
         return createPendingIntent(context, IntentType.CLEANUP, null, queuedSiteToSiteClientConfig, parcelableQueuedOperationResultCallback);
     }

@@ -24,10 +24,16 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A @{@link DataPacket} for a byte array.
+ */
 public class ByteArrayDataPacket implements DataPacket {
     private final Map<String, String> attributes;
     private final byte[] data;
 
+    /**
+     * Create a @{@link DataPacket} from a in-memory byte array
+     */
     public ByteArrayDataPacket(Map<String, String> attributes, byte[] data) {
         this.attributes = attributes;
         this.data = data;

@@ -17,14 +17,24 @@
 
 package com.hortonworks.hdf.android.sitetosite.collectors;
 
+import android.content.Context;
 import android.os.Parcelable;
 
+import com.hortonworks.hdf.android.sitetosite.client.QueuedSiteToSiteClientConfig;
+import com.hortonworks.hdf.android.sitetosite.client.SiteToSiteClientConfig;
 import com.hortonworks.hdf.android.sitetosite.packet.DataPacket;
+import com.hortonworks.hdf.android.sitetosite.service.ParcelableQueuedOperationResultCallback;
+import com.hortonworks.hdf.android.sitetosite.service.ParcelableTransactionResultCallback;
 
 /**
  * Fetches data packets to send via site-to-site
+ *
+ * @see com.hortonworks.hdf.android.sitetosite.service.SiteToSiteRepeating
+ * @see com.hortonworks.hdf.android.sitetosite.service.SiteToSiteRepeating#createSendPendingIntent(Context, DataCollector, SiteToSiteClientConfig, ParcelableTransactionResultCallback)
+ * @see com.hortonworks.hdf.android.sitetosite.service.SiteToSiteRepeating#createEnqueuePendingIntent(Context, DataCollector, QueuedSiteToSiteClientConfig, ParcelableQueuedOperationResultCallback)
  */
 public interface DataCollector extends Parcelable {
+
     /**
      * Returns the data packets
      *

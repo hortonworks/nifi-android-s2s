@@ -21,6 +21,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import static com.hortonworks.hdf.android.sitetosite.client.persistence.SiteToSiteDBConstants.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,8 +31,8 @@ public class SiteToSiteDBTestUtil {
         SiteToSiteDB siteToSiteDB = new SiteToSiteDB(context);
         SQLiteDatabase writableDatabase = siteToSiteDB.getWritableDatabase();
         try {
-            writableDatabase.delete(SiteToSiteDB.DATA_PACKET_QUEUE_TABLE_NAME, null, null);
-            writableDatabase.delete(SiteToSiteDB.PEER_STATUSES_TABLE_NAME, null, null);
+            writableDatabase.delete(DATA_PACKET_QUEUE_TABLE_NAME, null, null);
+            writableDatabase.delete(PEER_STATUSES_TABLE_NAME, null, null);
         } finally {
             writableDatabase.close();
         }
@@ -48,7 +50,7 @@ public class SiteToSiteDBTestUtil {
     private static long getQueuedPacketCount(SiteToSiteDB siteToSiteDB) {
         SQLiteDatabase readableDatabase = siteToSiteDB.getReadableDatabase();
         try {
-            Cursor query = readableDatabase.query(SiteToSiteDB.DATA_PACKET_QUEUE_TABLE_NAME, new String[]{"count(*) as numRows"}, null, null, null, null, null);
+            Cursor query = readableDatabase.query(DATA_PACKET_QUEUE_TABLE_NAME, new String[]{"count(*) as numRows"}, null, null, null, null, null);
             try {
                 assertTrue(query.moveToNext());
                 return query.getLong(query.getColumnIndex("numRows"));

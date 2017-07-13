@@ -251,6 +251,8 @@ public class SQLiteDataPacketQueue extends AbstractQueuedSiteToSiteClient {
         writableDatabase.beginTransaction();
         try {
             long currentTime = new Date().getTime();
+
+            // First, "fail" any stale S2S transactions that may have expired / failed / are stuck for any reason.
             writableDatabase.execSQL("UPDATE " + DATA_PACKET_QUEUE_TABLE_NAME +
                     " SET " + DATA_PACKET_QUEUE_TRANSACTION_COLUMN + " = NULL" +
                     " WHERE " + DATA_PACKET_QUEUE_TRANSACTION_COLUMN +
@@ -265,6 +267,8 @@ public class SQLiteDataPacketQueue extends AbstractQueuedSiteToSiteClient {
             writableDatabase.endTransaction();
             writableDatabase.close();
         }
+
+        // Second, process queued packets that are not marked as part of an existing S2S transaction in priority order.
         SiteToSiteClient siteToSiteClient = siteToSiteClientConfig.createClient();
         while (doProcess(siteToSiteClient)) {
             Log.d(CANONICAL_NAME, " processed batch of transactions");
@@ -272,6 +276,11 @@ public class SQLiteDataPacketQueue extends AbstractQueuedSiteToSiteClient {
     }
 
     protected boolean doProcess(SiteToSiteClient siteToSiteClient) throws IOException {
+
+        // use the specified siteToSiteClient to create a transaction,
+        // iterate over my queued packets to the configured limit(s), sending each packet over the transaction,
+        // and complete the transaction.
+
         SQLiteDataPacketIterator sqLiteDataPacketIterator = getSqLiteDataPacketIterator();
         if (!sqLiteDataPacketIterator.hasNext()) {
             return false;

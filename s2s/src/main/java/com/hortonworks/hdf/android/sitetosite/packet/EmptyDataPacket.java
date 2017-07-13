@@ -47,6 +47,11 @@ public class EmptyDataPacket implements DataPacket {
         }
     };
 
+    /**
+     * Create an attribtues-only @{@link DataPacket}.
+     *
+     * @param attributes The key-value map for the Data Packet attributes.
+     */
     public EmptyDataPacket(Map<String, String> attributes) {
         this.attributes = attributes;
     }

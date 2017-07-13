@@ -32,6 +32,11 @@ import java.util.Map;
 public class FileDataPacket implements DataPacket {
     private final File file;
 
+    /**
+     * Create a @{@link DataPacket} wrapper for a file input stream
+     *
+     * @param file The file for which to create a @{@link DataPacket}
+     */
     public FileDataPacket(File file) {
         this.file = file;
     }

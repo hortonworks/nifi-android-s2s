@@ -155,6 +155,7 @@ These queuing configuration options can also be set in the properties file along
 | s2s.config.maxRows | When using the SiteToSiteService interface that queues flow file data packets in a local database, this controls the maximum number of data packets to keep in the local buffer prior before starting to age off flow files. Defaults to 10,000 | 
 | s2s.config.maxSize | When using the SiteToSiteService interface that queues flow file data packets in a local database, this controls the maximum number of **bytes** to keep in the local buffer prior before starting to age off flow files. Defaults to 10 MB. Note, it is a more expensive operation to age off by size than by row count or TTL using the Data Packet Prioritizer. | 
 | s2s.config.maxTransactionTime | When using the SiteToSiteService interface that queues flow file data packets in a local database, this controls the maximum duration, in **milliseconds** of an attempted batch / transaction before it will be marked as failed and the data file flow packets will be returned to the local queue where they can be picked up in a future transaction attempt for retry. Defaults to 10 minutes. | 
+| s2s.config.dataPacketPrioritizerClass | The fully qualified class name of the `DataPacketPrioritizer` to be used, e.g., `com.example.android.bundle.MyCustomDataPacketPrioritizer`. | 
 
 #### Enqueue
 Add data packet(s) to queue to send later

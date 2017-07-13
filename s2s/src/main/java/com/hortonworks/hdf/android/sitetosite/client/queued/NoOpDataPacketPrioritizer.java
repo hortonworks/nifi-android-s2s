@@ -21,6 +21,9 @@ import android.os.Parcel;
 
 import com.hortonworks.hdf.android.sitetosite.packet.DataPacket;
 
+/**
+ * An example implementation of a @{@link DataPacketPrioritizer}.
+ */
 public class NoOpDataPacketPrioritizer implements DataPacketPrioritizer {
     public static Creator<NoOpDataPacketPrioritizer> CREATOR = new Creator<NoOpDataPacketPrioritizer>() {
         @Override
