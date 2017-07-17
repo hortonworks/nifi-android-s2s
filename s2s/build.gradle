@@ -50,3 +50,30 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
+
+// Additional, specifiable jar outputs
+afterEvaluate {
+    task buildSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task buildJavaDoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        failOnError false
+    }
+
+    task buildJavaDocJar(type: Jar, dependsOn: buildJavaDoc) {
+        classifier = 'javadoc'
+        from buildJavaDoc.destinationDir
+    }
+
+    task buildReleaseJar(type: Jar, dependsOn: assembleRelease) {
+        classifier = 'release'
+        from "$buildDir/intermediates/classes/release/"
+        exclude '**/BuildConfig.class'
+        exclude '**/R.class'
+        exclude '**/R$*.class'
+    }
+}
