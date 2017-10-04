@@ -29,8 +29,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SocketGetPeersPeerOperation implements PeerOperation<List<Peer>, SocketPeerConnector> {
+
+    private static final Logger logger = Logger.getLogger(SocketGetPeersPeerOperation.class.getName());
 
     @Override
     public List<Peer> perform(Peer peer, SocketPeerConnector connectionManager) throws IOException {
@@ -57,23 +60,23 @@ public class SocketGetPeersPeerOperation implements PeerOperation<List<Peer>, So
                 RequestType.SHUTDOWN.writeRequestType(dos);
                 dos.flush();
             } catch (IOException e) {
-                // Ignore
+                logger.warning("Data output stream could not be flushed cleanly when done using socket.");
             }
 
             try {
                 outputStream.close();
             } catch (IOException e) {
-                // Ignore
+                logger.warning("Output stream could not be closed cleanly when done using socket.");
             }
             try {
                 inputStream.close();
             } catch (IOException e) {
-                // Ignore
+                logger.warning("Input stream could not be closed cleanly when done using socket.");
             }
             try {
                 socket.close();
             } catch (IOException e) {
-                // Ignore
+                logger.warning("Socket could not be closed cleanly when done using socket.");
             }
         }
     }
